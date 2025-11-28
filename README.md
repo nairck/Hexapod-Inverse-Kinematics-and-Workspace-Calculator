@@ -40,7 +40,6 @@ Usage Tips:
 Dependencies:
 -------------
 - MATLAB (R2020b or later recommended) with GUI support enabled
-- Symbolic Math Toolbox (MathWorks, version 8.7 or later recommended)
 - 64-bit Windows operating system (tested on Windows 11)
 - Precompiled 64-bit MEX files (included)
 
