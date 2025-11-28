@@ -1,5 +1,5 @@
 function inv_return=stew_inverse(xsi,ysi,xmi,ymi,roll,pitch,yaw,px,py,pz,baseZ,platformZ)
-digits(15)                           %digit accuracy specification
+%digits(15)                           %digit accuracy specification
 a1=[xsi(1);ysi(1);baseZ;1];
 a2=[xsi(2);ysi(2);baseZ;1];
 a3=[xsi(3);ysi(3);baseZ;1];
@@ -43,3 +43,4 @@ platcoords=[b1(1),b1(2),b1(3),b2(1),b2(2),b2(3),b3(1),b3(2),b3(3),b4(1),b4(2),b4
 animcoords=[b1t(1),b1t(2),b1t(3),b2t(1),b2t(2),b2t(3),b3t(1),b3t(2),b3t(3),b4t(1),b4t(2),b4t(3),b5t(1),b5t(2),b5t(3),b6t(1),b6t(2),b6t(3)]; %plat position return for animation
 inv_return=[Legs,platcoords,animcoords]; %return
 end
+
