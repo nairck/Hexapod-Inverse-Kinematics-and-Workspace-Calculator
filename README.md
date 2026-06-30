@@ -1,7 +1,7 @@
 # 6-6 Stewart Platform — Inverse Kinematics & Workspace Calculator
 
-**Original author:** Joe Brown (CSU Sacramento), 2006 — <https://github.com/jotux/Steward-Platform-Forward-Kinematics-Solver>
-**Adapted & extended by:** Adam B. Johnson (University of Victoria), 2022–2025
+- **Original concept/author:** Joe Brown (CSU Sacramento), 2006 — <https://github.com/jotux/Steward-Platform-Forward-Kinematics-Solver>
+- **Adapted & extended by:** Adam B. Johnson (University of Victoria), 2022–2025
 
 A MATLAB GUI for computing and visualizing the **inverse kinematics (IK)** and **workspace** of a
 6-6 Stewart–Gough platform (hexapod). It solves the actuator (leg) lengths required to reach a
