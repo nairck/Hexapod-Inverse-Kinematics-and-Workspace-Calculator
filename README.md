@@ -1,4 +1,4 @@
-# Hexapod — Inverse Kinematics & Workspace Calculator
+# Hexapod Inverse Kinematics & Workspace Calculator
 
 Compute and visualize the **inverse kinematics (IK)** and **workspace** of a **6-6 Gough-Stewart
 platform** (a *hexapod*). Given a commanded pose, it solves the six actuator (leg) lengths needed
