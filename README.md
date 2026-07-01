@@ -29,11 +29,13 @@ build them, but those builds are currently untested.
 
 ## Getting started
 
-**Windows.** Download `HexapodCalculator.exe` from [Releases](../../releases) and run it. SmartScreen
+**Windows 10/11:** 
+- Download `HexapodCalculator.exe` from [Releases](../../releases) and run it. SmartScreen
 may warn about an unrecognized app (the executable is unsigned); choose *More info → Run anyway*. A
 default `formdata.txt` is created next to the executable on first launch.
 
-**MATLAB.** Open MATLAB (R2020b or later), `cd` into [`matlab/`](matlab/), add the folder to the
+**MATLAB:** 
+- Open MATLAB (R2020b or later), `cd` into [`matlab/`](matlab/), add the folder to the
 path, and run:
 
 ```matlab
