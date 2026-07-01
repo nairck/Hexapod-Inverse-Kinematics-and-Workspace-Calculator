@@ -7,6 +7,11 @@ to reach it, draws the mechanism, and maps its **reachable** (translational) and
 joints: the solver assumes a **fully general geometry with no symmetry requirement**, so any valid
 joint layout is supported.
 
+![The Hexapod Calculator in use](docs/figures/hexapod-calculator-overview.png)
+*The calculator solving inverse kinematics with a live 3D view of the mechanism (left), alongside the
+reachable and orientation workspace analyses and their rendered boundary volumes (right).*
+
+
 Originally a MATLAB tool by **Joe Brown** (CSU Sacramento, 2006); adapted and extended by
 **Adam B. Johnson** (University of Victoria, 2022–2025) to align the SPIDERS instrument on the
 Subaru Telescope. The figures below are from the associated dissertation (see [References](#references)).
