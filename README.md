@@ -16,7 +16,7 @@ Subaru Telescope. The figures below are from the associated dissertation (see [R
 All three implementations share the same math and the same file formats (`formdata.txt` settings and
 `.mat`/`.npz` workspace data), so results and saved files are interchangeable.
 
-| Version | Best for | Location |
+| Version | Use | Location |
 |---|---|---|
 | **Windows executable** | Running on Windows with no install — no MATLAB or Python | [Releases](../../releases) → `HexapodCalculator.exe` |
 | **MATLAB** | MATLAB users; the original reference implementation | [`matlab/`](matlab/) |
