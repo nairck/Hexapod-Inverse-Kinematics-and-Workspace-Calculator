@@ -1,4 +1,4 @@
-# Hexapod — Inverse Kinematics & Workspace Calculator
+# Hexapod Inverse Kinematics & Workspace Calculator
 
 A tool for computing and visualizing the **inverse kinematics (IK)** and **workspace** of a
 **6-6 Gough-Stewart platform** — commonly known as a **hexapod**. The "6-6" means six independent
@@ -27,9 +27,9 @@ and saved files are compatible across them.
 
 | Version | Best for | Where it lives / how to get it |
 |---|---|---|
-| 🪟 **Windows executable** (`.exe`) | Running on Windows with **no install** — no MATLAB, no Python, nothing to set up. Just download and double-click. | **[Releases](../../releases)** (download the latest `HexapodCalculator.exe`) |
-| 📐 **MATLAB** | MATLAB users; the original, reference implementation. | [`matlab/`](matlab/) — run `RUN_HEXAPOD_CALCULATOR` |
-| 🐍 **Python** | Building your own binary (incl. **macOS / Linux**), or reading/modifying the source. | [`python/`](python/) — `pip install -r requirements.txt` then `python run.py` |
+| **Windows executable** (`.exe`) | Running on Windows with **no install** — no MATLAB, no Python, nothing to set up. Just download and double-click. | **[Releases](../../releases)** (download the latest `HexapodCalculator.exe`) |
+| **MATLAB** | MATLAB users; the original, reference implementation. | [`matlab/`](matlab/) — run `RUN_HEXAPOD_CALCULATOR` |
+| **Python** | Building your own binary (incl. **macOS / Linux**), or reading/modifying the source. | [`python/`](python/) — `pip install -r requirements.txt` then `python run.py` |
 
 **Which should I use?**
 - Just want to *use* the tool on Windows → grab the **executable** from Releases.
