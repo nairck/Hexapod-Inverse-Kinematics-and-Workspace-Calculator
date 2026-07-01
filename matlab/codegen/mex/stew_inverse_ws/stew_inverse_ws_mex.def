@@ -1,0 +1,9 @@
+LIBRARY stew_inverse_ws_mex.mexw64
+EXPORTS
+mexFunction
+mexfilerequiredapiversion
+emlrtMexFcnProperties
+stew_inverse_ws
+stew_inverse_ws_initialize
+stew_inverse_ws_terminate
+stew_inverse_ws_atexit

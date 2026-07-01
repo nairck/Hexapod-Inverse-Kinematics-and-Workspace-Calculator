@@ -1,0 +1,50 @@
+# CompilerName=mingw64
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root/build/win64
+matlabdir = C:/Program Files/MATLAB/R2022a
+startdir = C:/Users/adamb/OneDrive/UVic PhD Research/SPIDERS - Mech Interface Work/6-6 Stewart Platform/SPIDERS Input Focus Calculator/SPIDERS Calculator Aug 2023
+
+# Toolchain information
+cc = C:\ProgramData\MATLAB\SupportPackages\R2022a\3P.instrset\mingw_w64.instrset\bin\gcc
+cxx = C:\ProgramData\MATLAB\SupportPackages\R2022a\3P.instrset\mingw_w64.instrset\bin\g++
+linker = C:\ProgramData\MATLAB\SupportPackages\R2022a\3P.instrset\mingw_w64.instrset\bin\gcc
+linkerxx = C:\ProgramData\MATLAB\SupportPackages\R2022a\3P.instrset\mingw_w64.instrset\bin\g++
+
+cflags =  -c -fexceptions -fno-omit-frame-pointer -m64 -DMATLAB_MEX_FILE  -DMATLAB_MEX_FILE -O2 -fwrapv -DNDEBUG -std=c99 -I "C:\Users\adamb\OneDrive\UVic PhD Research\SPIDERS - Mech Interface Work\6-6 Stewart Platform\SPIDERS Input Focus Calculator\SPIDERS Calculator Aug 2023\codegen\mex\stew_inverse_ws" -I "C:\Users\adamb\OneDrive\UVic PhD Research\SPIDERS - Mech Interface Work\6-6 Stewart Platform\SPIDERS Input Focus Calculator\SPIDERS Calculator Aug 2023" -I "C:\Users\adamb\OneDrive\UVic PhD Research\SPIDERS - Mech Interface Work\6-6 Stewart Platform\SPIDERS Input Focus Calculator\SPIDERS Calculator Aug 2023\codegen\mex\stew_inverse_ws\interface" -I "C:\Program Files\MATLAB\R2022a\extern\include" -I "." -DMODEL=stew_inverse_ws_mex -D__USE_MINGW_ANSI_STDIO=1  
+
+cxxflags =  -c -fexceptions -fno-omit-frame-pointer -std=c++11 -m64 -DMATLAB_MEX_FILE  -DMATLAB_MEX_FILE -O2 -fwrapv -DNDEBUG -std=c++11 -I "C:\Users\adamb\OneDrive\UVic PhD Research\SPIDERS - Mech Interface Work\6-6 Stewart Platform\SPIDERS Input Focus Calculator\SPIDERS Calculator Aug 2023\codegen\mex\stew_inverse_ws" -I "C:\Users\adamb\OneDrive\UVic PhD Research\SPIDERS - Mech Interface Work\6-6 Stewart Platform\SPIDERS Input Focus Calculator\SPIDERS Calculator Aug 2023" -I "C:\Users\adamb\OneDrive\UVic PhD Research\SPIDERS - Mech Interface Work\6-6 Stewart Platform\SPIDERS Input Focus Calculator\SPIDERS Calculator Aug 2023\codegen\mex\stew_inverse_ws\interface" -I "C:\Program Files\MATLAB\R2022a\extern\include" -I "." -DMODEL=stew_inverse_ws_mex -D__USE_MINGW_ANSI_STDIO=1  
+
+ldflags =  -m64 -Wl,--no-undefined -shared -static -L"C:\Program Files\MATLAB\R2022a\extern\lib\win64\mingw64" -llibmx -llibmex -llibmat -lm -llibmwlapack -llibmwblas -o "stew_inverse_ws_mex.mexw64" -llibemlrt -llibcovrt -llibut -llibmwmathutil  stew_inverse_ws_mex.def
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in -o $out
+
+rule cxx
+    command = $cxx $cxxflags $in -o $out
+
+rule link
+    command = $linker @$out.rsp $ldflags
+    rspfile = $out.rsp
+    rspfile_content = $in
+
+rule linkxx
+    command = $linkerxx $in $ldflags
+
+# Build
+build $builddir/stew_inverse_ws_data.o : cc $root/stew_inverse_ws_data.c
+build $builddir/rt_nonfinite.o : cc $root/rt_nonfinite.c
+build $builddir/stew_inverse_ws_initialize.o : cc $root/stew_inverse_ws_initialize.c
+build $builddir/stew_inverse_ws_terminate.o : cc $root/stew_inverse_ws_terminate.c
+build $builddir/stew_inverse_ws.o : cc $root/stew_inverse_ws.c
+build $builddir/_coder_stew_inverse_ws_api.o : cc $root/interface/_coder_stew_inverse_ws_api.c
+build $builddir/_coder_stew_inverse_ws_mex.o : cc $root/interface/_coder_stew_inverse_ws_mex.c
+build $builddir/_coder_stew_inverse_ws_info.o : cc $root/interface/_coder_stew_inverse_ws_info.c
+build $builddir/c_mexapi_version.o : cc $matlabdir/extern/version/c_mexapi_version.c
+
+# Link
+build $root\stew_inverse_ws_mex.mexw64 : link $builddir/stew_inverse_ws_data.o $builddir/rt_nonfinite.o $builddir/stew_inverse_ws_initialize.o $builddir/stew_inverse_ws_terminate.o $builddir/stew_inverse_ws.o $builddir/_coder_stew_inverse_ws_api.o $builddir/_coder_stew_inverse_ws_mex.o $builddir/_coder_stew_inverse_ws_info.o $builddir/c_mexapi_version.o 
