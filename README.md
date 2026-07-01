@@ -1,25 +1,54 @@
-# 6-6 Stewart Platform — Inverse Kinematics & Workspace Calculator
+# Hexapod — Inverse Kinematics & Workspace Calculator
+
+A tool for computing and visualizing the **inverse kinematics (IK)** and **workspace** of a
+**6-6 Gough-Stewart platform** — commonly known as a **hexapod**. The "6-6" means six independent
+base joints and six independent platform joints; the solver assumes a **fully general geometry with
+no symmetry requirement**, so any valid joint layout is supported. Given a commanded pose it solves
+the actuator (leg) lengths needed to reach it, draws the hexapod, and maps the **reachable**
+(translational) and **orientation** (rotational) workspaces — giving clear insight into the
+system's operational limits for safe, precise alignment.
+
+*(The mechanism is called a hexapod throughout the rest of this document.)*
 
 - **Original concept/author:** Joe Brown (CSU Sacramento), 2006 — <https://github.com/jotux/Steward-Platform-Forward-Kinematics-Solver>
 - **Adapted & extended by:** Adam B. Johnson (University of Victoria), 2022–2025
 
-A MATLAB GUI for computing and visualizing the **inverse kinematics (IK)** and **workspace** of a
-6-6 Stewart–Gough platform (hexapod). It solves the actuator (leg) lengths required to reach a
-commanded pose, draws the platform, and maps the **reachable** (translational) and **orientation**
-(rotational) workspaces — giving clear insight into the system's operational limits for safe,
-precise alignment.
-
-> The figures below come from the dissertation, where the calculator was adapted to align the
-> SPIDERS instrument (Subaru Pathfinder Instrument for Detecting Exoplanets & Retrieving Spectra)
+> The figures in this README come from the dissertation, where the calculator was adapted to align
+> the SPIDERS instrument (Subaru Pathfinder Instrument for Detecting Exoplanets & Retrieving Spectra)
 > on the Subaru Telescope. See [References](#references).
+
+---
+
+## Choose your version
+
+The calculator comes in three interchangeable forms. **All three implement the same math and share
+the same input/output file formats** (`formdata.txt` settings and `.mat` workspace data), so results
+and saved files are compatible across them.
+
+| Version | Best for | Where it lives / how to get it |
+|---|---|---|
+| 🪟 **Windows executable** (`.exe`) | Running on Windows with **no install** — no MATLAB, no Python, nothing to set up. Just download and double-click. | **[Releases](../../releases)** (download the latest `HexapodCalculator.exe`) |
+| 📐 **MATLAB** | MATLAB users; the original, reference implementation. | [`matlab/`](matlab/) — run `RUN_HEXAPOD_CALCULATOR` |
+| 🐍 **Python** | Building your own binary (incl. **macOS / Linux**), or reading/modifying the source. | [`python/`](python/) — `pip install -r requirements.txt` then `python run.py` |
+
+**Which should I use?**
+- Just want to *use* the tool on Windows → grab the **executable** from Releases.
+- Have MATLAB and want the original → **MATLAB** version.
+- Want it on **macOS or Linux**, or want to build/modify it yourself → **Python** version (it also
+  builds the Windows `.exe`).
+
+The Windows executable is built from the Python version. The Python port additionally offers a
+docked output console, light/dark/system colour themes, a startup splash, per-window app icons, and
+fully non-blocking workspace/PNG rendering. Prebuilt macOS/Linux binaries are **not** provided —
+the Python version builds them, but those builds are currently **untested** (contributions welcome).
 
 ---
 
 ## Hexapod geometry & inverse kinematics
 
-![Hexapod platform geometry](references/figure-2-14-platform-geometry.png)
+![Hexapod platform geometry](docs/figures/figure-2-14-platform-geometry.png)
 
-*Figure 2.14 — Stewart–Gough (hexapod) platform layout: the base and platform coordinate frames,
+*Figure 2.14 — Hexapod (6-6 Gough-Stewart platform) layout: the base and platform coordinate frames,
 spherical joint positions, and an example displaced pose used as the IK target.*
 
 The platform is defined by six base joints **aᵢ** and six platform joints **bᵢ**, each given by its
@@ -43,7 +72,7 @@ reference for computing the **relative** adjustments needed to move to a new pos
 
 ## The calculator interface
 
-![Adapted IK calculator interface](references/figure-2-16-calculator-interface.png)
+![Calculator interface](docs/figures/figure-2-16-calculator-interface.png)
 
 *Figure 2.16 — The calculator at the home configuration, with the input and output sections
 labelled.*
@@ -76,7 +105,7 @@ The interface is organized into **Inputs** and **Outputs**:
 
 ## Inverse kinematics output
 
-![IK calculation output](references/figure-2-17-ik-output.png)
+![IK calculation output](docs/figures/figure-2-17-ik-output.png)
 
 *Figure 2.17 — IK output: absolute leg-length changes and the corresponding angular
 (turnbuckle) adjustments.*
@@ -101,12 +130,12 @@ the chosen pose, the search refines the boundary along each radial direction unt
 actuator stroke (leg-length) limits. A preliminary check confirms the search is feasible within the
 defined constraints. The evaluation can start from the **home**, **new**, or **old** pose.
 
-![Workspace resolution and pose selection](references/figure-2-18-workspace-resolution.png)
+![Workspace resolution and pose selection](docs/figures/figure-2-18-workspace-resolution.png)
 
 *Figure 2.18 — Resolution and starting-pose selection, with live status feedback. Coarser
 resolutions solve faster but give lower-fidelity boundaries.*
 
-![Reachable workspace](references/figure-2-19-reachable-workspace.png)
+![Reachable workspace](docs/figures/figure-2-19-reachable-workspace.png)
 
 *Figure 2.19 — Reachable workspace from the home pose (roll/pitch/yaw = 0). Faint dots mark sampled
 boundary points; the closed surface uses all of them, coloured by Z for clarity.*
@@ -114,61 +143,77 @@ boundary points; the closed surface uses all of them, coloured by Z for clarity.
 For a symmetric hexapod, the home configuration produces a characteristic hexagonal pattern in the
 XY plane, and over the full Z range the reachable workspace forms a **hexagonal bipyramid**.
 
-![Orientation workspace](references/figure-2-20-orientation-workspace.png)
+![Orientation workspace](docs/figures/figure-2-20-orientation-workspace.png)
 
 *Figure 2.20 — Orientation workspace from the home pose (X, Y, Z fixed).*
 
 The orientation workspace, shaped by actuator limits and translation coupling, forms an
 asymmetric, **dome-like** volume centred on the home orientation.
 
-![Adjusted workspaces after a pose change](references/figure-2-21-adjusted-workspaces.png)
+![Adjusted workspaces after a pose change](docs/figures/figure-2-21-adjusted-workspaces.png)
 
 *Figure 2.21 — Adjusted reachable (left) and orientation (right) workspaces from a representative
 pose. The pose sits near one leg's range limit, shown by its proximity to the workspace edges.*
 
 After a pose change, both workspaces can be re-evaluated to assess its effect on reachability.
 
-![PNG export interface](references/figure-2-22-png-export.png)
+![PNG export interface](docs/figures/figure-2-22-png-export.png)
 
 *Figure 2.22 — PNG export: save workspace plots from current or saved `.mat` data, optionally as a
 series of evenly spaced viewing angles for assembling videos or GIFs.*
 
 ---
 
-## How to run
+## Quick start by version
 
-1. Open MATLAB (R2020b or later recommended, with GUI support).
-2. Set the working directory to this folder and add all subfolders to the path.
-3. Run:
+### Windows executable (no install)
+1. Download `HexapodCalculator.exe` from the **[Releases](../../releases)** page.
+2. Double-click it. On first launch it creates a `formdata.txt` next to itself with default values;
+   replace it with your own saved configuration any time.
+3. Windows SmartScreen may warn about an unrecognized app (the exe isn't code-signed) — choose
+   **More info → Run anyway**.
 
-   ```matlab
-   >> RUN_HEXAPOD_CALCULATOR
-   ```
+### MATLAB
+See [`matlab/README.md`](matlab/README.md). In short: open MATLAB (R2020b+), `cd` into `matlab/`,
+add the folder to the path, and run `RUN_HEXAPOD_CALCULATOR`.
 
-## Usage tips
+### Python (and building your own binary)
+See [`python/README.md`](python/README.md). In short:
+```bash
+cd python
+python -m venv .venv           # Python 3.11 or 3.12 recommended
+# Windows:  .venv\Scripts\activate     macOS/Linux:  source .venv/bin/activate
+pip install -r requirements.txt
+python run.py                  # run from source
+```
+To build a standalone binary: `build_windows.bat` (Windows), `./build_macos.sh` (macOS),
+or `./build_linux.sh` (Linux).
+
+---
+
+## Repository layout
+
+```
+.
+├── matlab/          Original MATLAB program (RUN_HEXAPOD_CALCULATOR.m + solvers/GUI/MEX)
+├── python/          Cross-platform Python/Qt port (source, build scripts, PyInstaller spec)
+├── docs/figures/    Figures used in this README (from the dissertation)
+└── README.md        This file
+```
+The Windows `.exe` is distributed via **Releases** rather than committed to the repository (binaries
+and build artifacts don't belong in git — see `.gitignore`).
+
+---
+
+## Usage tips (all versions)
 
 - **Save Everything** writes the full window configuration to `formdata.txt` (auto-loaded on start).
 - Enter a **Change to Input Focus Pose** and solve to get leg lengths and turnbuckle adjustments.
 - **Home** or **Zero** the input focus for quick trials of different poses.
-- Apply and track a constant ± offset on base/platform joint X and/or Y positions.
 - Choose a workspace **resolution** before running (speed vs. fidelity); `.mat` exports are automatic
   after drawing a figure.
 - Use **NEW** or **RECALLed** `.mat` data to export PNGs — including a series of evenly spaced angles
   to assemble videos or GIFs offline.
-
-## Dependencies
-
-- MATLAB R2020b or later (GUI enabled)
-- 64-bit Windows (tested on Windows 11)
-- Precompiled 64-bit MEX files (included)
-
-## File overview
-
-- `RUN_HEXAPOD_CALCULATOR.m` — main entry point
-- `MAIN_GUI.m` — GUI layout and logic
-- `*.m` — solvers, button handlers, save/load, and visualization functions
-- `formdata.txt` — platform/system configuration save file
-- `*.mat`, `*.png` — generated workspace outputs
 
 ---
 
