@@ -1,0 +1,15 @@
+# Hexapod Inverse Kinematics & Workspace Calculator
+# Tested target: Python 3.11 or 3.12 on Windows 11 (also works on macOS/Linux).
+
+PySide6>=6.6           # Qt GUI
+pyvista>=0.43          # 3D workspace surface (VTK)
+pyvistaqt>=0.11        # non-blocking PyVista window inside Qt
+matplotlib>=3.7        # embedded 3D platform plot
+numpy>=1.24            # math / vectorised workspace sweep
+scipy>=1.10            # alpha-shape fallback + .mat reading
+
+# Build-only (single .exe):
+pyinstaller>=6.0
+
+# Optional: only needed to read MATLAB v7.3 (HDF5) .mat workspace files
+# h5py>=3.8
