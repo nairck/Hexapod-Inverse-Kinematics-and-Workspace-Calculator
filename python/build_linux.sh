@@ -111,7 +111,11 @@ icons_present() {
 }
 
 register_icon() {
-    [ -f "$MIME_XML" ] && icons_present && return 0        # already done
+    # The marker changes whenever the definition below changes, so an older
+    # registration is replaced instead of being left in place.
+    if [ -f "$MIME_XML" ] && grep -q "hexapod-mime-v3" "$MIME_XML" 2>/dev/null && icons_present; then
+        return 0                                           # already done
+    fi
     mkdir -p "$MIME_DIR/packages" 2>/dev/null || return 0
     for sz in $ICON_SIZES; do
         mkdir -p "$ICON_DIR/$sz/mimetypes" 2>/dev/null || return 0
@@ -122,6 +126,7 @@ register_icon() {
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="application/x-hexapod-calculator">
     <comment>Hexapod Calculator</comment>
+    <!-- hexapod-mime-v3 -->
     <!-- Still an executable, or the desktop forgets the file can be run and
          asks which program should open it. -->
     <sub-class-of type="application/x-executable"/>
@@ -129,7 +134,11 @@ register_icon() {
          from the type, others only honour these elements. -->
     <icon name="application-x-hexapod-calculator"/>
     <generic-icon name="application-x-hexapod-calculator"/>
-    <glob pattern="HexapodCalculator*" weight="100"/>
+    <!-- Any name starting with HexapodCalculator, so the file can be renamed
+         freely.  The weight is deliberately below the standard 50 used by
+         *.tar.gz and *.zip, so an archive of this program is still treated as
+         an archive: when several globs match, the heaviest one wins. -->
+    <glob pattern="HexapodCalculator*" weight="40"/>
   </mime-type>
 </mime-info>
 MIMEXML
@@ -198,6 +207,7 @@ ICON_SIZES="16x16 22x22 24x24 32x32 48x48 64x64 128x128 256x256"
 
 need=0
 [ -f "$MIME_XML" ] || need=1
+grep -q "hexapod-mime-v3" "$MIME_XML" 2>/dev/null || need=1
 for sz in $ICON_SIZES; do
     cmp -s assets/icon.png "$ICONS/$sz/mimetypes/$ICON_NAME.png" || need=1
 done
@@ -213,6 +223,7 @@ if [ "$need" = 1 ]; then
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="application/x-hexapod-calculator">
     <comment>Hexapod Calculator</comment>
+    <!-- hexapod-mime-v3 -->
     <!-- Still an executable, or the desktop forgets the file can be run and
          asks which program should open it. -->
     <sub-class-of type="application/x-executable"/>
@@ -220,7 +231,11 @@ if [ "$need" = 1 ]; then
          from the type, others only honour these elements. -->
     <icon name="application-x-hexapod-calculator"/>
     <generic-icon name="application-x-hexapod-calculator"/>
-    <glob pattern="HexapodCalculator*" weight="100"/>
+    <!-- Any name starting with HexapodCalculator, so the file can be renamed
+         freely.  The weight is deliberately below the standard 50 used by
+         *.tar.gz and *.zip, so an archive of this program is still treated as
+         an archive: when several globs match, the heaviest one wins. -->
+    <glob pattern="HexapodCalculator*" weight="40"/>
   </mime-type>
 </mime-info>
 MIMEXML
