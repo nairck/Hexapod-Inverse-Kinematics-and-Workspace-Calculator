@@ -352,6 +352,30 @@ repository (binaries and build artifacts don't belong in git — see `.gitignore
 
 **1.0** — initial release: inverse kinematics, workspace analyses and PNG export.
 
+
+## License
+
+MIT, see [`LICENSE`](LICENSE). The original MATLAB tool is by Joe Brown (see References);
+this repository is an adaptation and extension of it.
+
+## Code signing policy
+
+Free code signing provided by [SignPath.io](https://signpath.io), certificate by
+[SignPath Foundation](https://signpath.org).
+
+The Windows executable on the Releases page is built by GitHub Actions from the tagged source in
+this repository (`.github/workflows/build.yml`) and submitted to SignPath for signing from that
+build. Nothing built on a developer machine is signed.
+
+Team roles:
+- Authors (commit access): Adam B. Johnson
+- Reviewers (pull requests from anyone else): Adam B. Johnson
+- Approvers (release signing requests): Adam B. Johnson
+
+Privacy policy: this program will not transfer any information to other networked systems unless
+specifically requested by the user or the person installing or operating it.
+
+
 ## References
 
 1. J. Brown, *Stewart Platform Forward Kinematics Solver*, CSU Sacramento, 2006.
