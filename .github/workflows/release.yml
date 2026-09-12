@@ -1,0 +1,76 @@
+# Builds HexapodCalculator.exe on a GitHub-hosted Windows machine and, for a
+# version tag (v1.2.0, v1.3.0, ...), sends it to SignPath for signing and
+# attaches the signed file to the GitHub release for that tag.
+#
+# Manual runs (Actions tab, "Run workflow") only build; nothing is signed and
+# no release is touched.  That is the way to check the build works before the
+# SignPath application is approved.
+#
+# SignPath only signs files that GitHub built here.  Executables built on a
+# developer machine are never submitted.
+
+name: Build and sign Windows release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # attach the signed exe to the release
+  actions: read     # let SignPath fetch the unsigned artifact from this run
+
+jobs:
+  build:
+    name: Build HexapodCalculator.exe
+    runs-on: windows-latest
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        working-directory: python
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Build with PyInstaller
+        working-directory: python
+        run: python -m PyInstaller --clean --noconfirm hexapod.spec
+
+      - name: Upload the unsigned executable
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: HexapodCalculator-unsigned
+          path: python/dist/HexapodCalculator.exe
+          if-no-files-found: error
+
+  sign:
+    name: Sign with SignPath and publish
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    steps:
+      - name: Submit to SignPath and wait for the signed file
+        uses: signpath/github-action-submit-signing-request@v2
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ secrets.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}
+          github-artifact-id: ${{ needs.build.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 7200   # two hours to click Approve
+          output-artifact-directory: signed
+
+      - name: Attach the signed executable to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: signed/**/HexapodCalculator.exe
+          fail_on_unmatched_files: true
