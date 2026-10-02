@@ -1,21 +1,21 @@
-## License
+MIT License
 
-MIT, see [`LICENSE`](LICENSE). The original MATLAB tool is by Joe Brown (see References);
-this repository is an adaptation and extension of it.
+Copyright (c) 2022-2026 Adam B. Johnson
 
-## Code signing policy
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Free code signing provided by [SignPath.io](https://signpath.io), certificate by
-[SignPath Foundation](https://signpath.org).
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-The Windows executable on the Releases page is built by GitHub Actions from the tagged source in
-this repository (`.github/workflows/release.yml`) and submitted to SignPath for signing from that
-build. Nothing built on a developer machine is signed.
-
-Team roles:
-- Authors (commit access): Adam B. Johnson
-- Reviewers (pull requests from anyone else): Adam B. Johnson
-- Approvers (release signing requests): Adam B. Johnson
-
-Privacy policy: this program will not transfer any information to other networked systems unless
-specifically requested by the user or the person installing or operating it.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
