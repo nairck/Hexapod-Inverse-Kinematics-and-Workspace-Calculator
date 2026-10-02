@@ -356,7 +356,7 @@ repository (binaries and build artifacts don't belong in git — see `.gitignore
 ## License
 
 MIT, see [`LICENSE`](LICENSE). The original MATLAB tool is by Joe Brown (see References);
-this repository is an adaptation and extension of it.
+this repository is an adaptation and extension of it. The original author gave permission to publish this adaptation under MIT in [issue #1](https://github.com/nairck/Hexapod-Inverse-Kinematics-and-Workspace-Calculator/issues/1).
 
 ## Code signing policy
 
@@ -364,7 +364,7 @@ Free code signing provided by [SignPath.io](https://signpath.io), certificate by
 [SignPath Foundation](https://signpath.org).
 
 The Windows executable on the Releases page is built by GitHub Actions from the tagged source in
-this repository (`.github/workflows/build.yml`) and submitted to SignPath for signing from that
+this repository (`.github/workflows/release.yml`) and submitted to SignPath for signing from that
 build. Nothing built on a developer machine is signed.
 
 Team roles:
