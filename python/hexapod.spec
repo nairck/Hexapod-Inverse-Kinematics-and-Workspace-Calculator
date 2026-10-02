@@ -15,13 +15,59 @@ Environment-variable overrides (no need to edit this file):
     set HEXAPOD_CONSOLE=1   ->  attach a console window so you can SEE startup output
                                 / errors (debugging a hang or crash).
 """
+import datetime
 import os
+import re
 import sys
 from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 
 # Defaults; overridable via env vars so a debug build needs no file edits.
 onefile = os.environ.get("HEXAPOD_ONEFILE", "1") != "0"
 show_console = os.environ.get("HEXAPOD_CONSOLE", "0") == "1"
+
+# ---- Windows version resource -------------------------------------------
+# Required by SignPath: every signed binary must carry a product name and a
+# product version, and the signing policy rejects files that do not.  It is
+# also what the Properties > Details tab of the .exe shows.
+# ProductName must stay exactly as written here for every release.
+APP_NAME = "Hexapod Calculator"
+EXE_NAME = "HexapodCalculator"
+COMPANY_NAME = "Adam B. Johnson"
+
+# Single source of truth for the version: hexapod/__init__.py
+with open(os.path.join("hexapod", "__init__.py"), encoding="utf-8") as _f:
+    _m = re.search(r'^__version__\s*=\s*["\']([^"\']+)["\']', _f.read(), re.M)
+if not _m:
+    raise SystemExit("hexapod.spec: could not read __version__ from hexapod/__init__.py")
+APP_VERSION = _m.group(1)
+# Windows wants exactly four numeric fields; pad "1.2.0" -> (1, 2, 0, 0).
+_ver4 = ([int(x) for x in re.findall(r"\d+", APP_VERSION)] + [0, 0, 0, 0])[:4]
+
+version_info = None
+if sys.platform.startswith("win"):
+    from PyInstaller.utils.win32.versioninfo import (
+        VSVersionInfo, FixedFileInfo, StringFileInfo, StringTable, StringStruct,
+        VarFileInfo, VarStruct)
+    version_info = VSVersionInfo(
+        ffi=FixedFileInfo(filevers=tuple(_ver4), prodvers=tuple(_ver4), mask=0x3F,
+                          flags=0x0, OS=0x40004, fileType=0x1, subtype=0x0, date=(0, 0)),
+        kids=[
+            StringFileInfo([
+                StringTable("040904B0", [     # 0409 = US English, 04B0 = Unicode
+                    StringStruct("CompanyName", COMPANY_NAME),
+                    StringStruct("FileDescription", APP_NAME),
+                    StringStruct("FileVersion", ".".join(str(x) for x in _ver4)),
+                    StringStruct("InternalName", EXE_NAME),
+                    StringStruct("LegalCopyright",
+                                 f"Copyright (c) {datetime.date.today().year} {COMPANY_NAME}"),
+                    StringStruct("OriginalFilename", EXE_NAME + ".exe"),
+                    StringStruct("ProductName", APP_NAME),
+                    StringStruct("ProductVersion", APP_VERSION),
+                ]),
+            ]),
+            VarFileInfo([VarStruct("Translation", [1033, 1200])]),
+        ],
+    )
 
 block_cipher = None
 IS_WIN = sys.platform.startswith("win")
@@ -133,7 +179,7 @@ if onefile:
         name="HexapodCalculator",
         debug=False, bootloader_ignore_signals=False, strip=False,
         upx=False, upx_exclude=[], runtime_tmpdir=None,
-        console=show_console, icon=icon,
+        console=show_console, icon=icon, version=version_info,
     )
     target = exe
 else:
@@ -146,7 +192,7 @@ else:
         exclude_binaries=True,          # one-folder: COLLECT gathers the binaries,
         name="HexapodCalculator",       # so the EXE itself must not embed them
         debug=False, bootloader_ignore_signals=False, strip=False,
-        upx=False, console=show_console, icon=icon,
+        upx=False, console=show_console, icon=icon, version=version_info,
     )
     _coll = [exe, a.binaries, a.zipfiles, a.datas]
     if splash is not None:
